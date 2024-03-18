@@ -128,7 +128,7 @@ def check_and_install_package(package, use_pip=False):
 
 
 packages = ['matplotlib', 'numpy', 'pandas', 'pygal', 'ipyleaflet']
-pip_only_packages = ['rasterio', geopandas', 'rasterstats', 'geoplot', 'ggplot']
+pip_only_packages = ['rasterio', 'geopandas', 'rasterstats', 'geoplot', 'ggplot']
 
 installed_packages = {}
 failed_packages = []
