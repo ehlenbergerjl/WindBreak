@@ -1,3 +1,26 @@
+"""
+The wb_installs.py script automates the installation of necessary Python packages for the project.
+
+This script not only installs packages, but it also checks if a package is already installed,
+and only then installs it if it is not. Both pip and conda package managers are used for
+installation. The script installs multiple pred-defined packages. If a package fails to install,
+it is added to a list of failed packages, otherwise, it is added to a list of installed
+packages with its corresponding version number.
+
+The script ends by exporting the configuration of the conda environment to a `windbreaks.yml` file.
+
+Functions included in this script:
+* `install_package_with_conda(package: str) -> bool` - Install a package using conda.
+* `install_package_with_pip(package: str) -> bool` - Installs a package using pip.
+* `get_package_version(package: str) -> str or None` - Get the version of a given package.
+* `check_and_install_package(package: str, use_pip=False) -> Tuple[bool, str or None]` - Checks if a package is
+                                                                                installed and installs it if not.
+
+The key assumptions of this program are:
+- You have a working internet connection to fetch packages.
+- You have `pip` and `conda` installed and set in your PATH.
+- The packages specified in `packages` and `pip_only_packages` are correct.
+"""
 
 import os
 import subprocess
@@ -146,4 +169,3 @@ command = f'conda env export > "{os.path.join(PROJECT_DIR, YAML_FILE)}"'
 
 # Execute the command
 subprocess.run(command, shell=True)
-
