@@ -1,42 +1,8 @@
-:: Check if anaconda is installed and available
-where conda >nul 2>nul
-IF ERRORLEVEL 1 (
-    echo Unable to find Anaconda. Please install it first.
-
-    :: User input choice
-    set /P choice="Would you like to download and install Anaconda now? (y/n): "
-    if /I "%choice%" EQU "y" (
-        echo Attempting to install Anaconda...
-
-        :: Download and Install Latest Anaconda installer using PowerShell
-        powershell.exe -Command "
-            $anacondaPage = Invoke-WebRequest -Uri 'https://www.anaconda.com/products/distribution/'
-            $installerUrl = ($anacondaPage.ParsedHtml.getElementsByTagName('a') | Where-Object {$_.href -like '*Anaconda3-*-Windows-x86_64.exe'}).href
-            $installerName = [System.IO.Path]::GetFileName($installerUrl)
-
-            # Download Anaconda installer
-            Write-Host 'Downloading' $installerName '...'
-            Invoke-WebRequest -Uri $installerUrl -OutFile $installerName
-
-            # Install Anaconda
-            Write-Host 'Installing' $installerName '...'
-            Start-Process -Wait -FilePath $installerName -ArgumentList '/InstallationType=JustMe /RegisterPython=0 /S /D=%UserProfile%\Anaconda3'
-        "
-
-        :: Check if installation successful
-        where conda >nul 2>nul
-        IF ERRORLEVEL 1 (
-            echo Error in Anaconda configuration. Exiting...
-            exit /b 1
-        )
-
-        :: Add anaconda to PATH
-        setx PATH "%UserProfile%\Anaconda3;%UserProfile%\Anaconda3\Library\mingw-w64\bin;%UserProfile%\Anaconda3\Library\usr\bin;%UserProfile%\Anaconda3\Library\bin;%UserProfile%\Anaconda3\Scripts;%PATH%"
-    ) ELSE (
-        echo Skipping Anaconda installation. Exiting...
-        exit /b 1
-    )
-)
+@echo off
+setlocal
+:: Add anaconda to local PATH
+echo Adding Anaconda to the local PATH...
+set "PATH=%UserProfile%\Anaconda3;%UserProfile%\Anaconda3\Library\mingw-w64\bin;%UserProfile%\Anaconda3\Library\usr\bin;%UserProfile%\Anaconda3\Library\bin;%UserProfile%\Anaconda3\Scripts;%PATH%;"
 
 :: Check if the WindBreaks environment already exists
 conda info --envs | findstr /C:"WindBreaks" 1>nul

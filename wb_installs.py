@@ -36,6 +36,7 @@ def install_package_with_conda(package):
     Returns:
         bool: True if installation succeeded, False otherwise.
     '''
+    # conda_path = r'C:\Users\JEHlenberger\AppData\Local\anaconda3\envs\WindBreak\python.exe'
     try:
         subprocess.check_call(['conda', 'install', '-y', package])
         return True
@@ -85,35 +86,23 @@ def get_package_version(package):
 
 
 def check_and_install_package(package, use_pip=False):
-    '''
-    Checks if a package is installed and installs it if not.
-
-    Parameters:
-    - package (str): The name of the package to check and install.
-    - use_pip (bool): Optional. Specifies whether to use pip for installation. Default is False.
-
-    Returns:
-    A tuple (success, version):
-    - success (bool): True if the package is installed successfully, False otherwise.
-    - version (str or None): The installed version of the package. None if installation failed.
-
-    Example usage:
-    success, version = check_and_install_package('numpy')
-    if success:
-        print(f''numpy' version {version} is installed.')
-    else:
-        print('Failed to install 'numpy'.')
-    '''
     installed_version = get_package_version(package)
     if installed_version:
         print(f'"{package}" is already installed with version: {installed_version}')
         return True, installed_version
     else:
         print(f'"{package}" is not installed. Installing...')
+
+        success = False
+
         if use_pip:
             success = install_package_with_pip(package)
         else:
-            success = install_package_with_conda(package)
+            # Check if conda is available in the environment
+            if os.system('conda --version') == 0:
+                success = install_package_with_conda(package)
+
+            # If conda failed to install, try pip
             if not success:
                 success = install_package_with_pip(package)
 
@@ -125,6 +114,8 @@ def check_and_install_package(package, use_pip=False):
             installed_version = None
 
         return success, installed_version
+
+
 
 
 conda_packages = ['rasterio', 'matplotlib', 'numpy', 'pandas', 'pygal', 'ipyleaflet', 'netcdf4']
@@ -169,3 +160,5 @@ command = f'conda env export > "{os.path.join(PROJECT_DIR, YAML_FILE)}"'
 
 # Execute the command
 subprocess.run(command, shell=True)
+
+#%%
