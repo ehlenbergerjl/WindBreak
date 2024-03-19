@@ -19,7 +19,7 @@ Functions included in this script:
 The key assumptions of this program are:
 - You have a working internet connection to fetch packages.
 - You have `pip` and `conda` installed and set in your PATH.
-- The packages specified in `packages` and `pip_only_packages` are correct.
+- The packages specified in `conda_packages` and `pip_packages` are correct.
 """
 
 import os
@@ -127,20 +127,20 @@ def check_and_install_package(package, use_pip=False):
         return success, installed_version
 
 
-packages = ['matplotlib', 'numpy', 'pandas', 'pygal', 'ipyleaflet']
-pip_only_packages = ['rasterio', 'geopandas', 'rasterstats', 'geoplot', 'ggplot']
+conda_packages = ['rasterio', 'matplotlib', 'numpy', 'pandas', 'pygal', 'ipyleaflet', 'netcdf4']
+pip_packages = ['geopandas', 'rasterstats', 'geoplot', 'ggplot']
 
 installed_packages = {}
 failed_packages = []
 
-for package in packages:
+for package in conda_packages:
     success, installed_version = check_and_install_package(package)
     if success:
         installed_packages[package] = installed_version
     else:
         failed_packages.append(package)
 
-for package in pip_only_packages:
+for package in pip_packages:
     success, installed_version = check_and_install_package(package, use_pip=True)
     if success:
         installed_packages[package] = installed_version
