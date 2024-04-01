@@ -67,6 +67,7 @@ Here is an example:
 - [NOAA Storm Events (NCEI)](https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/)
 - [Copernicus Climate Data Store (CDS)](https://cds.climate.copernicus.eu/cdsapp#!/home)
 - [Climatology Lab](https://www.climatologylab.org/gridmet.html)
+- [Crop Loss](https://www.rma.usda.gov/SummaryOfBusiness/CauseOfLoss)
 
 # EXPLORATORY DATA ANALYSIS
 
