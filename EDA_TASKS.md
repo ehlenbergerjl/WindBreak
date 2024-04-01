@@ -1,3 +1,73 @@
+# Getting started
+
+Intstall the latest [MiniConda](https://docs.anaconda.com/free/miniconda/) for your Operating System
+
+- When asked, I recommend you install for 'Just me', not 'All users'
+- This is important if you are not admin on your system
+
+Create your environment in a Python shell (Terminal in PyCharm)
+
+- Replace 'myenv' with whatever name you want to give your new environment
+- I'm calling mine 'WindBreaks'
+  Install these packages with the '--yes' option to keep it moving without asking questions
+- ... or you can leave that out if you want to know what is being upgraded/downgraded/installed for compatibility and
+  dependency
+
+Here is an example:
+
+    # Create new env
+    conda create --name myenv
+    # Activate new env 
+    conda activate myenv
+    # Install the packages
+    python -m pip install jupyter
+    conda install conda-content-trust --yes
+    conda install -c anaconda ipykernel --yes
+    conda install -c conda-forge IPython --yes
+    conda install -c conda-forge netCDF4 --yes
+    conda install -c conda-forge rasterio --yes
+    conda install -c conda-forge numpy --yes
+    conda install -c conda-forge xarray --yes
+    conda install -c pyviz hvplot --yes
+    conda install -c conda-forge holoviews --yes
+    conda install -c anaconda pandas --yes
+    conda install -c conda-forge geopandas --yes
+    conda install -c conda-forge rasterstats --yes
+    conda install -c anaconda seaborn --yes
+    conda install -c conda-forge matplotlib --yes
+    conda install -c anaconda regex --yes
+    conda install -c conda-forge cartopy --yes
+    conda install -c conda-forge ipywidgets --yes
+
+    # Create the Jupyter Kernal for your notebook
+    python -m ipykernel install --user --name WindBreaks --display-name "WindBreaks"
+
+## Possible additional resources:
+
+### Tutorials
+
+#### Exploratory Analysis
+
+- [Tutorial 1](https://www.geeksforgeeks.org/quick-guide-to-exploratory-data-analysis-using-jupyter-notebook/)
+- [YOUR Data Teacher (YouTube video)](https://www.youtube.com/watch?v=iZ2MwVWKwr4)
+
+# Project Notes:
+
+## Standardization:
+
+### Colors
+
+- April red hex E41A1C
+- May blue hex 377EB8
+- June green hex 4DAF4A
+
+# Data Sources:
+
+- [NOAA Local Climate Data (LCD)](https://www.ncei.noaa.gov/maps/lcd/)
+- [NOAA Storm Events (NCEI)](https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/)
+- [Copernicus Climate Data Store (CDS)](https://cds.climate.copernicus.eu/cdsapp#!/home)
+- [Climatology Lab](https://www.climatologylab.org/gridmet.html)
+
 # EXPLORATORY DATA ANALYSIS
 
 1) Describe the Data
