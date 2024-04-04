@@ -3,14 +3,7 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\Data\crop_loss_COL\CleanCropData.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Data\crop_loss_COL\dictionary_colsommonth_allyears.csv">
+        <entry key="\StormEventsvent.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
