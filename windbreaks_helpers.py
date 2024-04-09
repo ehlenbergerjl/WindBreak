@@ -39,15 +39,25 @@ def print_all_imported_modules():
         print(name)
 
 
-def print_cols(df):
-    print('\n', 'Dataframe columns:', '\n')
-    output_string = ''
-    for i, col_name in enumerate(df.columns):
-        dtype = df[col_name].dtype
-        output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
-    pyperclip.copy('Dataframe:\n' + output_string)
-    print(output_string)
+# def print_cols(df):
+#     print('\n', 'Dataframe columns:', '\n')
+#     output_string = ''
+#     for i, col_name in enumerate(df.columns):
+#         dtype = df[col_name].dtype
+#         output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
+#     pyperclip.copy('Dataframe:\n' + output_string)
+#     print(output_string)
 
+
+ef
+print_cols(df):
+print('\n', 'Dataframe columns:', '\n')
+output_string = ''
+for i, col_name in enumerate(df.columns):
+    dtype = df[col_name].dtype
+    output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
+pyperclip.copy('Dataframe:\n' + output_string)
+print(output_string)
 
 from pyproj import CRS
 
