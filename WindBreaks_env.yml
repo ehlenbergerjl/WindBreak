@@ -1,0 +1,8 @@
+
+Name          Active Path
+----          ------ ----
+base           False C:\Program
+arcgispro-py3  False C:\Program
+               False C:\Users\excehl.LAPTOP-RF0HPLKT\miniconda3
+WindBreaks      True C:\Users\excehl.LAPTOP-RF0HPLKT\miniconda3\envs\WindBreaks
+
