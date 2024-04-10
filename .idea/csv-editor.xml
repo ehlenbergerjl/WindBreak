@@ -80,6 +80,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Output\crop_data_filtered.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
