@@ -38,13 +38,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Data\crop_loss_COL\dictionary_colsommonth_allyears.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
       </map>
     </option>
   </component>
