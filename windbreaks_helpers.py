@@ -173,6 +173,7 @@ def combine_files(src_dir, years=None, states=None):
     # Load the header file
     header_tbl = pd.read_csv(os.path.join(src_dir, 'crop_loss_COL/colsom_headers.csv'), header=None,
                              encoding='iso-8859-1')
+
     # Get the headers from the 2nd column (index 1) of the header DataFrame
     tbl_headers = header_tbl.iloc[:, 1].values.tolist()  # convert to list for use as headers
 
@@ -183,23 +184,29 @@ def combine_files(src_dir, years=None, states=None):
         from datetime import datetime
         start_year = 2000
         current_year = datetime.now().year
-        years = [str(year) for year in
-                 range(start_year, current_year + 1)]  # this will give you a list of years from 2000 up to this year
+        years = [str(int(year)) for year in
+                 range(start_year, current_year + 1)]  # this will create a list of years from 2000 to the present
 
     for year in years:
         filename = f'crop_loss_COL/colsom_{year}.txt'
-    try:
-        df = pd.read_csv(os.path.join(src_dir, filename), sep='|', header=None)
-        df.columns = tbl_headers  # Set the headers immediately after loading
+        try:
+            df = pd.read_csv(os.path.join(src_dir, filename), sep='|', header=None)
+            df.columns = tbl_headers  # Set the headers immediately after loading
 
-        # If a list of states is provided, filter the dataframe based on states
-        if states:
-            df = df[df['State Abbreviation'].isin(
-                states)]  # Now the column name can be used because the headers are already set
+            # Filter based on the 'Year of Loss' column
+            df = df.dropna(subset=['Year of Loss'])  # remove NaN values
+            df['Year of Loss'] = df['Year of Loss'].apply(
+                lambda x: str(int(x)))  # converting year of loss from float to string
+            df = df[df['Year of Loss'].isin(years)]
 
-        dataframes.append(df)
-    except FileNotFoundError:
-        print(f'File {filename} not found.')
+            # If list of states is provided, filter the dataframe based on those states
+            if states:
+                df = df[df['State Abbreviation'].isin(
+                    states)]  # Now the column name can be used because the headers are already set
+
+            dataframes.append(df)
+        except FileNotFoundError:
+            print(f'File {filename} not found.')
 
     # concatenate all dataframes
     concatenated_df = pd.concat(dataframes, ignore_index=True)
@@ -208,3 +215,14 @@ def combine_files(src_dir, years=None, states=None):
     concatenated_df.columns = tbl_headers
 
     return concatenated_df
+
+
+def remove_outliers(df, column_name):
+    Q1 = df[column_name].quantile(0.25)
+    Q3 = df[column_name].quantile(0.75)
+    IQR = Q3 - Q1
+
+    df_out = df[~((df[column_name] < (Q1 - 1.5 * IQR)) | (df[column_name] > (Q3 + 1.5 * IQR)))]
+    return df_out
+
+# %%
