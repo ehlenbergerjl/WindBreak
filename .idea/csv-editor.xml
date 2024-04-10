@@ -3,6 +3,34 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\Data\Storm_event\.ipynb_checkpoints\StormEvents_2018-checkpoint.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\Storm_event\StormEvents_2014.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\Storm_event\StormEvents_2016.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\Storm_event\StormEvents_2018.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\Storm_event\StormEvents_all.csv">
           <value>
             <Attribute>
@@ -17,6 +45,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Data\Storm_event\ugc_areas.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\crop_loss_COL\CleanCropData.csv">
           <value>
             <Attribute>
@@ -25,6 +60,13 @@
           </value>
         </entry>
         <entry key="\Data\crop_loss_COL\CropData_all.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\crop_loss_COL\colsom_headers.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
