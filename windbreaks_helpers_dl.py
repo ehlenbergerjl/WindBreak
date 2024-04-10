@@ -1,5 +1,4 @@
 import sys
-import os
 import importlib
 import re
 import types
@@ -8,9 +7,8 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 from shapely import wkt
+from pyproj import CRS
 
-
-#%%
 
 def print_functions():
     # List comprehension to get all the functions
@@ -40,26 +38,15 @@ def print_all_imported_modules():
         print(name)
 
 
-# def print_cols(df):
-#     print('\n', 'Dataframe columns:', '\n')
-#     output_string = ''
-#     for i, col_name in enumerate(df.columns):
-#         dtype = df[col_name].dtype
-#         output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
-#     pyperclip.copy('Dataframe:\n' + output_string)
-#     print(output_string)
-
-
-def print_cols(df):
+def print_col(df):
     print('\n', 'Dataframe columns:', '\n')
     output_string = ''
     for i, col_name in enumerate(df.columns):
         dtype = df[col_name].dtype
         output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
-    pyperclip.copy('Dataframe:\n' + output_string)
+    df_temp = pd.DataFrame([output_string])
+    df_temp.to_clipboard(index=False, header=False)
     print(output_string)
-
-from pyproj import CRS
 
 
 def get_crs(df):
@@ -75,11 +62,6 @@ def get_crs(df):
     print('Unit:', crs.axis_info[0].unit_name)
 
 
-# %% md
-# Define Functions for EDA
-# %% md
-## - Extent Filter Function that works with the variable 'extents_coords'
-# %%
 def filter_df_extent(df, extent_coords, lat1, lon1, lat2, lon2):
     min_lat, max_lat = extent_coords['min_lat'], extent_coords['max_lat']
     min_lon, max_lon = extent_coords['min_lon'], extent_coords['max_lon']
@@ -91,12 +73,7 @@ def filter_df_extent(df, extent_coords, lat1, lon1, lat2, lon2):
         ]
 
 
-# %% md
-## - Convert Geodataframe to a Shapefile
-from shapely import wkt
-
-
-def gdf_to_shp(gdf, output_file, extent_coords):
+def gdf_to_shp(df, output_file, extent_coords):
     '''
     This function reads a DataFrame, checks for a 'geometry' column or creates one based on latitude and longitude.
     It then filters the DataFrame based on the provided extent coordinates and saves the resultant GeoDataFrame into shapefile format.
@@ -110,6 +87,20 @@ def gdf_to_shp(gdf, output_file, extent_coords):
     None
     '''
 
+    # Check if 'geometry' column exists
+    if 'geometry' in df.columns:
+        # If 'geometry' column exists, convert it to geometric objects
+        df['geometry'] = df['geometry'].apply(lambda x: wkt.loads(x) if pd.notnull(x) else x)
+    else:
+        # If 'geometry' column does not exist, create it based on 'BEGIN_LAT', 'BEGIN_LON', etc.
+        df['geometry'] = [Point(xy) for xy in zip(df['BEGIN_LON'], df['BEGIN_LAT'])]
+
+    # Filter out rows with invalid geometry
+    df = df[df['geometry'].notnull()]
+
+    # Convert the DataFrame to a GeoDataFrame
+    gdf = gpd.GeoDataFrame(df, geometry='geometry')
+
     # Filter the records that either start or end within the given extents
     gdf_filtered = filter_df_extent(gdf, extent_coords, 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON')
 
@@ -117,9 +108,29 @@ def gdf_to_shp(gdf, output_file, extent_coords):
     gdf_filtered.to_file(output_file)
 
 
-# %% md
-## - Create Buffer Shapefile from Geodataframe
 # %%
+# # Old...
+# def gdf_to_shp(gdf, output_file, extent_coords):
+#     '''
+#     This function reads a GeoDataFrame, and filters it based on latitude and longitude.
+#     It then drops NA rows from 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON' and saves the resultant GeoDataFrame into shapefile format.
+#     Args:
+#     df: GeoDataFrame: The input GeoDataFrame.
+#     output_file: str: Path of the output shapefile.
+#     extent_coords: dict:
+#         A dictionary containing the coordinates for area bounds to the filter.
+#         Keys are 'min_lat', 'max_lat', 'min_lon', 'max_lon', belongs to either lat-lon pair.
+#     Returns:
+#     None
+#     '''
+#
+#     # Filter the records that either start or end within the given extents
+#     gdf_filtered = filter_df_extent(gdf, extent_coords, 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON')
+#
+#     # Save the GeoDataFrame as a shapefile
+#     gdf_filtered.to_file(output_file)
+
+
 def gdf_buf(gdf, distance, output_path):
     '''
     Creates a buffer around the geometries in a given GeoDataFrame and saves the output to a shapefile.
@@ -169,42 +180,38 @@ def gdf_buf(gdf, distance, output_path):
     return gdf
 
 
-def combine_files(src_dir, years=None, states=None):
-    # Load the header file
-    header_tbl = pd.read_csv(os.path.join(src_dir, 'crop_loss_COL/colsom_headers.csv'), header=None,
-                             encoding='iso-8859-1')
-    # Get the headers from the 2nd column (index 1) of the header DataFrame
-    tbl_headers = header_tbl.iloc[:, 1].values.tolist()  # convert to list for use as headers
-
-    dataframes = []  # list to hold dataframes
-
-    # If no years provided, default to 2000-present
-    if not years:
-        from datetime import datetime
-        start_year = 2000
-        current_year = datetime.now().year
-        years = [str(year) for year in
-                 range(start_year, current_year + 1)]  # this will give you a list of years from 2000 up to this year
-
-    for year in years:
-        filename = f'crop_loss_COL/colsom_{year}.txt'
-    try:
-        df = pd.read_csv(os.path.join(src_dir, filename), sep='|', header=None)
-        df.columns = tbl_headers  # Set the headers immediately after loading
-
-        # If a list of states is provided, filter the dataframe based on states
-        if states:
-            df = df[df['State Abbreviation'].isin(
-                states)]  # Now the column name can be used because the headers are already set
-
-        dataframes.append(df)
-    except FileNotFoundError:
-        print(f'File {filename} not found.')
-
-    # concatenate all dataframes
-    concatenated_df = pd.concat(dataframes, ignore_index=True)
-
-    # assign headers to concatenated dataframe
-    concatenated_df.columns = tbl_headers
-
-    return concatenated_df
+'''
+These are my pre-optimize imports
+import sys
+import types
+import warnings
+import os
+import glob
+import regex as re
+import netCDF4 as nc
+import rasterio
+import numpy as np
+import xarray as xr
+import holoviews as hv
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import geopandas as gpd
+import ipywidgets as widgets
+import matplotlib.ticker as mticker
+import chardet
+from geopandas import GeoDataFrame
+from shapely.geometry import Point
+from bokeh.io import output_notebook, show
+from bokeh.resources import INLINE
+from rasterio.transform import from_origin
+from rasterstats import zonal_stats
+from shapely.geometry import LineString
+from matplotlib.path import Path
+from matplotlib.colors import Normalize
+from netCDF4 import Dataset
+from pyproj import CRS
+from IPython.display import display
+from sklearn.preprocessing import StandardScaler
+from windbreaks_helpers import *
+'''

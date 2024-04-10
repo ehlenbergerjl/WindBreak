@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Data\Storm_event\StormEvents_alltest.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\crop_loss_COL\CleanCropData.csv">
           <value>
             <Attribute>
