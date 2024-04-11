@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Data\_alldata\Storm_event\.ipynb_checkpoints\StormEvents_2018-checkpoint.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\_alldata\Storm_event\StormEvents_2018.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\crop_loss_COL\crop_data_filtered.csv">
           <value>
             <Attribute>
