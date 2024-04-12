@@ -66,6 +66,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Output\crop_ind_by_yf.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Output\crop_ind_by_yfc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Output\crop_ind_by_ymf.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Output\crop_ind_by_yrmo_fps.csv">
           <value>
             <Attribute>
