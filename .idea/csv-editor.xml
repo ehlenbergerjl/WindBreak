@@ -3,6 +3,27 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\Data\Storm_event\StormEvents_KSNE_2011.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\Storm_event\StormEvents_all_pdmod.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\Storm_event\StormEvents_all_xlmod.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\Storm_event\ugc_areas.csv">
           <value>
             <Attribute>
@@ -53,6 +74,13 @@
           </value>
         </entry>
         <entry key="\Output\crop_ind_by_yrmo_fps_crop.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Output\ksne_se_count.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

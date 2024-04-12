@@ -1,13 +1,12 @@
-import sys
 import os
-import importlib
-import re
+import sys
 import types
-import pyperclip
-import pandas as pd
+from datetime import datetime
+
 import geopandas as gpd
-from shapely.geometry import Point
-from shapely import wkt
+import pandas as pd
+import pyperclip
+from shapely.geometry import LineString
 
 
 #%%
@@ -56,7 +55,7 @@ def print_cols(df):
     for i, col_name in enumerate(df.columns):
         dtype = df[col_name].dtype
         output_string += f'Index: {i}, Column Name: {col_name}, Data Type: {dtype}\n'
-    pyperclip.copy('Dataframe:\n' + output_string)
+    pyperclip.copy('Dataframe columns:\n' + output_string)
     print(output_string)
 
 from pyproj import CRS
@@ -75,11 +74,6 @@ def get_crs(df):
     print('Unit:', crs.axis_info[0].unit_name)
 
 
-# %% md
-# Define Functions for EDA
-# %% md
-## - Extent Filter Function that works with the variable 'extents_coords'
-# %%
 def filter_df_extent(df, extent_coords, lat1, lon1, lat2, lon2):
     min_lat, max_lat = extent_coords['min_lat'], extent_coords['max_lat']
     min_lon, max_lon = extent_coords['min_lon'], extent_coords['max_lon']
@@ -93,33 +87,71 @@ def filter_df_extent(df, extent_coords, lat1, lon1, lat2, lon2):
 
 # %% md
 ## - Convert Geodataframe to a Shapefile
-from shapely import wkt
 
+def df_gdf_or_csv_to_shp(source, output, extent_coords):
+    """
+    This function reads a CSV file and filters it based on latitude and longitude.
+    Then it drops NA rows from 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON' and converts the DataFrame into GeoDataFrame.
+    Finally, the output is saved into shapefile format.
 
-def gdf_to_shp(gdf, output_file, extent_coords):
-    '''
-    This function reads a DataFrame, checks for a 'geometry' column or creates one based on latitude and longitude.
-    It then filters the DataFrame based on the provided extent coordinates and saves the resultant GeoDataFrame into shapefile format.
     Args:
-    df: DataFrame: The input DataFrame.
+    source_file: str: Path of the source CSV file.
     output_file: str: Path of the output shapefile.
     extent_coords: dict:
-        A dictionary containing the coordinates for area bounds to filter.
-        Keys are 'min_lat', 'max_lat', 'min_lon', 'max_lon', belongs to either lat-lon pair.
+        A dictionary containing the coordinates for area bounds to the filter.
+        Keys are 'min_lat', 'max_lat', 'min_lon', 'max_lon', belongs to either lon-lat pair.
+
     Returns:
     None
-    '''
+    """
+
+    if isinstance(source, str):
+        # if source is a string (filepath), then load it as DataFrame
+        df = pd.read_csv(source)
+    elif isinstance(source, pd.DataFrame) or isinstance(source, gpd.GeoDataFrame):
+        # if source is DataFrame or GeoDataFrame, then use it as is
+        df = source
+    else:
+        raise ValueError('Invalid type for source. Source should be a file path (str) or DataFrame/GeoDataFrame')
+
+    # Pull out bounds for easier reference
+    min_lat, max_lat = extent_coords['min_lat'], extent_coords['max_lat']
+    min_lon, max_lon = extent_coords['min_lon'], extent_coords['max_lon']
 
     # Filter the records that either start or end within the given extents
-    gdf_filtered = filter_df_extent(gdf, extent_coords, 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON')
+    df_filtered = df[
+        (
+                (df['BEGIN_LAT'] >= min_lat) &
+                (df['BEGIN_LAT'] <= max_lat) &
+                (df['BEGIN_LON'] >= min_lon) &
+                (df['BEGIN_LON'] <= max_lon)
+        ) |
+        (
+                (df['END_LAT'] >= min_lat) &
+                (df['END_LAT'] <= max_lat) &
+                (df['END_LON'] >= min_lon) &
+                (df['END_LON'] <= max_lon)
+        )
+        ]
+
+    # Drop NA values from 'BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON'
+    df_filtered = df_filtered.dropna(subset=['BEGIN_LAT', 'BEGIN_LON', 'END_LAT', 'END_LON'])
+
+    # Create a new 'geometry' column in the DataFrame that contains LineString objects
+    df_filtered['geometry'] = df_filtered.apply(lambda row: LineString(
+        [(row['BEGIN_LON'], row['BEGIN_LAT']), (row['END_LON'], row['END_LAT'])]), axis=1)
+
+    # Convert the DataFrame to a GeoDataFrame
+    gdf = gpd.GeoDataFrame(df_filtered, geometry='geometry')
+
+    # Set the GeoDataFrame's coordinate reference system to NAD83
+    gdf.set_crs(epsg=4269, inplace=True)
 
     # Save the GeoDataFrame as a shapefile
-    gdf_filtered.to_file(output_file)
+    gdf.to_file(output)
 
+    return gdf
 
-# %% md
-## - Create Buffer Shapefile from Geodataframe
-# %%
 def gdf_buf(gdf, distance, output_path):
     '''
     Creates a buffer around the geometries in a given GeoDataFrame and saves the output to a shapefile.
@@ -225,4 +257,19 @@ def remove_outliers(df, column_name):
     df_out = df[~((df[column_name] < (Q1 - 1.5 * IQR)) | (df[column_name] > (Q3 + 1.5 * IQR)))]
     return df_out
 
+
+def combine_csv_files(src_dir, prefix):
+    # List of all the csv files beginning with specified prefix
+    csv_files = [os.path.join(src_dir, f) for f in os.listdir(src_dir) if f.startswith(prefix) and f.endswith('.csv')]
+
+    # Combine all into one GeoDataFrame
+    combined_gdf = pd.concat((gpd.read_file(f) for f in csv_files))
+
+    return combined_gdf
+
+
+def month_name_to_number(month_name):
+    datetime_object = datetime.strptime(month_name, "%B")
+    # We use +1 because January maps to 0 and December maps to 11
+    return datetime_object.month
 # %%
