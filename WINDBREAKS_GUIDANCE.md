@@ -38,6 +38,13 @@ Here is an example:
     conda install -c anaconda regex --yes
     conda install -c conda-forge cartopy --yes
     conda install -c conda-forge ipywidgets --yes
+    conda install -c conda-forge chardet --yes
+    conda install -c conda-forge pyperclip --yes
+    conda install -c conda-forge statsmodels --yes
+    conda install -c conda-forge shapely --yes
+    conda install -c conda-forge pyproj --yes
+    conda install -c conda-forge sklearn --yes
+
 
     # Create the Jupyter Kernal for your notebook
     python -m ipykernel install --user --name WindBreaks --display-name "WindBreaks"
