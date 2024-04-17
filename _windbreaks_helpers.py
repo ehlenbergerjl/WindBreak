@@ -4,8 +4,11 @@ import types
 from datetime import datetime
 
 import geopandas as gpd
+import matplotlib.colors as colors
 import pandas as pd
 import pyperclip
+from matplotlib.colors import Normalize
+from matplotlib.path import Path
 from shapely.geometry import LineString
 
 
@@ -273,3 +276,6 @@ def month_name_to_number(month_name):
     # We use +1 because January maps to 0 and December maps to 11
     return datetime_object.month
 # %%
+# Define a function to convert to millions
+def millions(x, pos):
+    return '%1.1fM' % (x * 1e-6)
