@@ -1,0 +1,30 @@
+1,Commodity Year Identifier,9(04),The identifier that represents the year in which the crop/commodity is normally harvested and indicates the policy year for which coverage was provided.
+2,State Code,9(02),The FIPS code that denotes the State in which the insured farm is located.
+3,State Abbreviation,X(02),USPS state abbreviation
+4,County Code,9(03),The FIPS code that denotes the County in which the insured farm is located.
+5,County Name,X(30),Name of the county.
+6,Commodity Code,9(04),The Risk Management Agency (RMA) code that denotes the crop/commodity for which the policy is issued.
+7,Commodity Name,X(30),Name of the crop/commodity
+8,Insurance Plan Code,9(02),"Code that denotes the type of insurance coverage is selected for the insured crop (e.g.APH, Revenue, Dollar, etc.)"
+9,Insurance Plan Name Abbreviation,X(05),Abbreviation of the Insurance Plan Name
+10,Coverage Category,X(01),Code that identifies the category of coverage elected : A = Buyup ; C = CAT ; E = Existing Coverage Policy ; L = Limited Coverage
+11,Stage Code,X(02),See Stage Code Listing
+12,Cause of Loss Code,9(02),The RMA code that identifies the peril that caused the loss on the crop
+13,Cause of Loss Description,X(35),Description of the cause of loss.
+14,Month of Loss,9(02),Month when the loss occurred
+15,Month of Loss Name,X(03),Name of the month when the loss occurred
+16,Year of Loss,9(04),Year the loss occurred
+17,Policies Earning Premium,9(09),Count of the number of crop policies with premium  NOTE : Not available for years prior to 1989.
+18,Policies Indemnified,9(09),Count of the number of crop policies with a reported loss
+19,Net Planted Quantity,9(12)V9(02),"Number of acres, tons, pounds, etc. planted to the crop after the insured’s share is applied."
+20,Net Endorsed Acres,9(12)V9(02),"Number of acres insured under an endorsement (e.g. SCO, STAX, Margin Protection)"
+21,Liability,9(12),The maximum dollar amount of insurance for the crop
+22,Total Premium,9(12),"Premium before application of any subsidies.  In general, the base premium rates times liability (Also called the base premium)"
+23,Producer Paid Premium,9(12),Premium paid by the producer
+24,Subsidy,9(12),Amount of subsidized premium.
+25,State/Private Subsidy,9(12),Subsidy provided by a state or private entity
+26,Additional Subsidy,9(12),An additional subsidy from a program or other process. 2021 and 2022 Additional Subsidy represents Pandemic Cover Crop Program amount.
+27,EFA Premium Discount,9(12),
+28,Net Determined Quantity,9(12)V9(02),"Number of acres, tons, pounds, etc. loss due to damage after the insured’s share is applied"
+29,Indemnity Amount,S9(12),The total amount of the loss for the designated peril.
+30,Loss Ratio,9(5)V9(02),Calculated: Indemnity / Total Premium.
