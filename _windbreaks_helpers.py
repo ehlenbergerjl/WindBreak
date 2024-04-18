@@ -1,12 +1,12 @@
+import calendar
+import geopandas as gpd
+import matplotlib.colors as colors
 import os
+import pandas as pd
+import pyperclip
 import sys
 import types
 from datetime import datetime
-
-import geopandas as gpd
-import matplotlib.colors as colors
-import pandas as pd
-import pyperclip
 from matplotlib.colors import Normalize
 from matplotlib.path import Path
 from shapely.geometry import LineString
@@ -53,7 +53,6 @@ def print_all_imported_modules():
 
 
 def print_cols(df):
-    print('\n', 'Dataframe columns:', '\n')
     output_string = ''
     for i, col_name in enumerate(df.columns):
         dtype = df[col_name].dtype
@@ -275,6 +274,11 @@ def month_name_to_number(month_name):
     datetime_object = datetime.strptime(month_name, "%B")
     # We use +1 because January maps to 0 and December maps to 11
     return datetime_object.month
+
+
+def month_number_to_name(month_number):
+    # We use -1 because January maps to 1 and December maps to 12
+    return calendar.month_name[month_number]
 # %%
 # Define a function to convert to millions
 def millions(x, pos):
