@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Data\Storm_event\StormEvents_ksnesdnd_pdmod.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\Storm_event\ugc_areas.csv">
           <value>
             <Attribute>
@@ -46,6 +53,34 @@
           </value>
         </entry>
         <entry key="\Data\crop_loss_COL\crop_data_filtered.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\crop_loss_COL\wr_cl.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\crop_loss_COL\wr_cl_IQR_filtered.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\crop_loss_COL\wr_cl_clip_filtered.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\crop_loss_COL\wr_cl_std_filtered.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
